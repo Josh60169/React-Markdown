@@ -1,6 +1,7 @@
 import React from 'react';
 import {Provider, connect} from 'react-redux';
 import {createStore} from 'redux';
+import {marked} from "https://cdnjs.cloudflare.com/ajax/libs/marked/13.0.2/lib/marked.esm.js";
 
 
 //const store = createStore();
@@ -25,7 +26,6 @@ export default class App extends React.Component {
       <div>
         <h1 className="text-center">React Markdown Editor</h1>
         <Editor />
-        <Display />
       </div>
     );
   }
@@ -35,21 +35,32 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: []
+      code: "# This is the first header!\n" + 
+      "## This is the second header!\n" +
+      "You can create links with markdown such as this one to YouTube [Click Me!](https://www.youtube.com)\n" +
+      "This is how a line of code is made: `console.log(\'hello world\')`.\n" +
+      "The following is an inline code block:\n" +
+      "```\nfunction showcase() {\n" +
+      "    console.log(\'This is a function!\');\n" +
+      "}\n```\n\n\n" +
+      "You can create blockquotes like this: \n> Here is a blockquote"
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    console.log(event.target.value);
+    this.setState(() => ({
+      code: event.target.value
+    }));
   };
 
   render() {
     return (
       <div>
         <h3 className='text-center'>Editor</h3>
-        <textarea id="editor" style={{width: "100%", height: "10em"}} onChange={this.handleChange}></textarea>
+        <textarea id="editor" style={{width: "100%", height: "10em"}} onChange={this.handleChange} value={this.state.code}></textarea>
+        <Display code={this.state.code}/>
       </div>
     );
   }
@@ -61,10 +72,15 @@ class Display extends React.Component {
   }
 
   render() {
+    marked.use({
+      gfm: true,
+      breaks: true
+    });
+
     return (
       <div>
         <h3 className='text-center'>Preview</h3>
-        <div id="preview"></div>
+        <div id="preview" dangerouslySetInnerHTML={{__html: marked.parse(this.props.code)}}></div>
       </div>
     );
   }
