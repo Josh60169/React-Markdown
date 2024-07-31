@@ -43,8 +43,12 @@ class Editor extends React.Component {
       "```\nfunction showcase() {\n" +
       "    console.log(\'This is a function!\');\n" +
       "}\n```\n\n\n" +
-      "You can create blockquotes like this: \n> Here is a blockquote"
+      "You can create blockquotes like this: \n> Here is a blockquote\n\n" +
+      "The text can be **bold**!\n\n" +
+      "1. You can have\n2. an ordered list like this!\n\n- Or it can be\n- an unordered list instead!\n\n\n" +
+      "Finally, don't forget about images!\n![Tux the Linux Penguin](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXiRA6gjVegGI_RxD20jPt8mf2TVFcf-nU7w&s)"
     };
+
 
     this.handleChange = this.handleChange.bind(this);
   }
