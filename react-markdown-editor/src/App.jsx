@@ -118,9 +118,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     newCode: (changedCode) => {
-      dispatch(modifyCode(changedCode))
+      dispatch(modifyCode(changedCode));
     }
   }
 };
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(App)
+const Container = connect(mapStateToProps, mapDispatchToProps)(App);
