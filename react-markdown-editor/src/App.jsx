@@ -24,7 +24,7 @@ const modifyCode = (changedCode) => {
   };
 }
 
-
+// Set the default state in the reducer instead, as it manages the changes being made (otherwise the code property is undefined)
 const codeReducer = (previousState = defaultCode, action) => {
   switch(action.type) {
     case CODE_CHANGED:
@@ -65,18 +65,12 @@ class App extends React.Component {
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   code: defaultCode
-    // };
-
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
+    // handles changes in editor through redux
     const updatedCode = event.target.value;
-    // this.setState(() => ({
-    //   code: event.target.value
-    // }));
     this.props.newCode(updatedCode);
   };
 
@@ -112,14 +106,12 @@ class Display extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('map state to props');
   return {
     code: state
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  console.log('map dispatch to props');
   return {
     newCode: (changedCode) => {
       dispatch(modifyCode(changedCode));
