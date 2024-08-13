@@ -25,7 +25,7 @@ const modifyCode = (changedCode) => {
 }
 
 
-const codeReducer = (previousState, action) => {
+const codeReducer = (previousState = defaultCode, action) => {
   switch(action.type) {
     case CODE_CHANGED:
       return action.changedCode;
@@ -35,14 +35,12 @@ const codeReducer = (previousState, action) => {
   }
 };
 
-const store = createStore(codeReducer);
+const store = createStore(codeReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 export default class AppWrapper extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-        <Container />
-      </Provider>
+      <App />
     )
   }
 }
@@ -56,7 +54,9 @@ class App extends React.Component {
     return (
       <div>
         <h1 className="text-center">React Markdown Editor</h1>
-        <Editor />
+        <Provider store={store}>
+          <Container />
+        </Provider>
       </div>
     );
   }
@@ -65,25 +65,27 @@ class App extends React.Component {
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      code: defaultCode
-    };
+    // this.state = {
+    //   code: defaultCode
+    // };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    this.setState(() => ({
-      code: event.target.value
-    }));
+    const updatedCode = event.target.value;
+    // this.setState(() => ({
+    //   code: event.target.value
+    // }));
+    this.props.newCode(updatedCode);
   };
 
   render() {
     return (
       <div>
         <h3 className='text-center'>Editor</h3>
-        <textarea id="editor" style={{width: "100%", height: "10em"}} onChange={this.handleChange} value={this.state.code}></textarea>
-        <Display code={this.state.code}/>
+        <textarea id="editor" style={{width: "100%", height: "10em"}} onChange={this.handleChange} value={this.props.code}></textarea>
+        <Display code={this.props.code}/>
       </div>
     );
   }
@@ -110,12 +112,14 @@ class Display extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log('map state to props');
   return {
     code: state
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
+  console.log('map dispatch to props');
   return {
     newCode: (changedCode) => {
       dispatch(modifyCode(changedCode));
@@ -123,4 +127,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(App);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Editor);
