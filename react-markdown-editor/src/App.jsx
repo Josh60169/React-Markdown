@@ -53,7 +53,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1 className="text-center">React Markdown Editor</h1>
+        <h1 className="text-center space-mono-regular">React Markdown Editor</h1>
         <Provider store={store}>
           <Container />
         </Provider>
@@ -77,9 +77,11 @@ class Editor extends React.Component {
   render() {
     return (
       <div>
-        <h3 className='text-center'>Editor</h3>
-        <textarea id="editor" style={{width: "100%", height: "10em"}} onChange={this.handleChange} value={this.props.code}></textarea>
-        <Display code={this.props.code}/>
+        <h3 className='text-center space-mono-regular'>Editor</h3>
+        <textarea id="editor" style={{width: "80%", height: "10em"}} onChange={this.handleChange} value={this.props.code}></textarea>
+        <div id="div-display">
+          <Display code={this.props.code} id="display"/>
+        </div>
       </div>
     );
   }
@@ -98,7 +100,7 @@ class Display extends React.Component {
 
     return (
       <div>
-        <h3 className='text-center'>Preview</h3>
+        <h3 className='text-center space-mono-regular'>Preview</h3>
         <div id="preview" dangerouslySetInnerHTML={{__html: marked.parse(this.props.code)}}></div>
       </div>
     );
